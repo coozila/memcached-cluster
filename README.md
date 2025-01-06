@@ -6,7 +6,7 @@
     <img width="233px" height="auto" src="https://www.coozila.com/static/themes/prometheus/img/coozila.png" />
 </p>
 <p align="center">
-    <a href="https://github.com/coozila/memcached-cluster/releases" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=downloads&query=downloads&url=https://raw.githubusercontent.com/coozila/memcached-cluster/dev/metrics.yml" alt="Total Downloads" /></a>
+    <a href="https://github.com/coozila/memcached-cluster/releases" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=downloads&query=downloads&url=https://raw.githubusercontent.com/coozila/memcached-cluster/dev/metrics.yaml" alt="Total Downloads" /></a>
     <a href="https://github.com/coozila/memcached-cluster/blob/dev/LICENSE" target="_blank"><img src="https://img.shields.io/badge/license-MIT-1c7ed6" alt="License" /></a>
 </p>
 
@@ -44,11 +44,11 @@ We provide three variants of the Memcached cluster:
    - Documentation: [Basic Cluster Documentation](SETUP_CLUSTER_1_3.md)
 
 2. **Intermediate Cluster with 5 Memcached Instances and 3 Mcrouter Instances**:
-   - Configuration file: [docker-compose-cluster-3-5.yml](docker-compose-cluster-3-5.yml)
+   - Configuration file: [docker-compose-cluster-3-5.yaml](docker-compose-cluster-3-5.yaml)
    - Documentation: [Cluster 3-5 Documentation](SETUP_CLUSTER_3_5.md)
 
 3. **Advanced Cluster with 9 Memcached Instances and 3 Mcrouter Instances**:
-   - Configuration file: [docker-compose-cluster-3-9.yml](docker-compose-cluster-3-9.yml)
+   - Configuration file: [docker-compose-cluster-3-9.yaml](docker-compose-cluster-3-9.yaml)
    - Documentation: [Cluster 3-9 Documentation](SETUP_CLUSTER_3_9.md)
 
 
@@ -260,7 +260,7 @@ docker compose up -d
 ### 7. Accessing the Logs
 
 ```bash
-docker-compose -f docker-compose-cluster-3-9.yml logs -f
+docker-compose -f docker-compose-cluster-3-9.yaml logs -f
 ```
 
 ## Cleanup

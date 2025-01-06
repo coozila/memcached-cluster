@@ -18,7 +18,7 @@ This configuration strikes a balance between cost and performance, making it sui
 ## Cluster Configuration
 
 ### Docker Compose File
-The configuration is defined in a `docker-compose-cluster-3-5.yml` file, which is used to create and manage the cluster's services.
+The configuration is defined in a `docker-compose-cluster-3-5.yaml` file, which is used to create and manage the cluster's services.
 
 ### Key Components:
 - **Memcached Instances**: 5 instances of Memcached are configured, each with unique ports to avoid conflicts. They are responsible for storing and retrieving key-value pairs.
@@ -29,7 +29,7 @@ The configuration is defined in a `docker-compose-cluster-3-5.yml` file, which i
 To start the cluster, run the following command in the terminal:
 
 ```bash
-docker-compose -f docker-compose-cluster-3-5.yml up -d
+docker-compose -f docker-compose-cluster-3-5.yaml up -d
 ```
 
 The `-d` flag runs the containers in detached mode.
@@ -38,14 +38,14 @@ The `-d` flag runs the containers in detached mode.
 You can monitor the logs of each service using:
 
 ```bash
-docker-compose -f docker-compose-cluster-3-5.yml logs -f
+docker-compose -f docker-compose-cluster-3-5.yaml logs -f
 ```
 ## Cleanup
 
 To stop and remove all containers and networks, run:
 
 ```bash
-docker-compose -f docker-compose-cluster-3-5.yml down
+docker-compose -f docker-compose-cluster-3-5.yaml down
 ```
 
 ## Data Distribution in the Memcached Cluster
