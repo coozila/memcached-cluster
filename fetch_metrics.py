@@ -1,38 +1,45 @@
 import requests
+import json
 
-# Repository details
+# GitHub repository details
 owner = "coozila"
 repo = "memcached-cluster"
 url = f"https://api.github.com/repos/{owner}/{repo}"
 
-# Get release data
+# Fetch release data for download counts
 releases_url = f"{url}/releases"
 releases_response = requests.get(releases_url)
 releases = releases_response.json()
 
-downloads = {}
+downloads_per_release = {}
+total_downloads = 0
+
+# Calculate downloads per release and total downloads
 for release in releases:
-    downloads[release['tag_name']] = sum(asset.get('download_count', 0) for asset in release.get('assets', []))
+    # Verifică dacă release-ul are assets
+    if 'assets' in release and release.get('tag_name') == "1.0.0":  # Use only the existing tag
+        download_count = sum(asset.get('download_count', 0) for asset in release['assets'])
+        downloads_per_release[release['tag_name']] = download_count
+        total_downloads += download_count
 
-# Get branch data
-branches_url = f"{url}/branches"
-branches_response = requests.get(branches_url)
-branches = branches_response.json()
+# Fetch repository data
+repo_response = requests.get(url)
+repo_data = repo_response.json()
 
-branch_downloads = {branch['name']: 0 for branch in branches}
-
-# Get open issues data
-issues_url = f"{url}/issues"
-issues_response = requests.get(issues_url)
-issues = issues_response.json()
-
-open_issues_count = sum(1 for issue in issues if 'pull_request' not in issue)
-
-# Final JSON structure
+# Extract required metrics
 metrics = {
-    "open_issues": open_issues_count,
-    "downloads": downloads,
-    "branches": branch_downloads
+    'open_issues': repo_data.get('open_issues_count', 0),
+    'downloads': downloads_per_release,  # Include downloads for each release
+    'total_downloads': total_downloads,    # Add total downloads
+    'branches': {
+        'dev': {
+            'downloads': 0  # You can update this if needed
+        }
+    }
 }
 
-print(metrics)
+# Save metrics to JSON file
+with open('metrics.json', 'w') as file:
+    json.dump(metrics, file, indent=4)
+
+print(f"Metrics: {metrics}")
