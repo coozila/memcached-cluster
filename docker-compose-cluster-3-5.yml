@@ -1,0 +1,180 @@
+# ----------------------------------------------------------------------------------#
+#                                                                                   #
+#   Copyright   (C) 2009 - 2024 Coozila! MIT License                                #
+#   Coozila! Team    lab@coozila.com                                                #
+#                                                                                   #
+# ----------------------------------------------------------------------------------#
+
+#   STACK NETWORK    ---------------------------------------------------------------#
+
+networks:                                                                           #
+
+    #   Private network for application services    --------------------------------#
+
+    stack_private_network:
+        external: true
+
+# ----------------------------------------------------------------------------------#
+
+#   STACK SERVICES    --------------------------------------------------------------#
+
+services:                                                                           #
+
+    #   MEMCACHED SERVER 1    ------------------------------------------------------#
+
+    memcached1:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        restart: always
+        ulimits:
+            memlock: -1
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11212:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MEMCACHED SERVER 2    ------------------------------------------------------#
+
+    memcached2:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        restart: always
+        ulimits:
+            memlock: -1
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11213:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MEMCACHED SERVER 3    ------------------------------------------------------#
+
+    memcached3:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        restart: always
+        ulimits:
+            memlock: -1
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11214:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MEMCACHED SERVER 4    ------------------------------------------------------#
+
+    memcached4:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        restart: always
+        ulimits:
+            memlock: -1
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11215:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MEMCACHED SERVER 5    ------------------------------------------------------#
+
+    memcached5:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        restart: always
+        ulimits:
+            memlock: -1
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11216:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MVROUTER 1    ----------------------------------------------------------------#
+
+    mcrouter1:
+        image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
+        container_name: mcrouter1-${MCROUTER_VERSION:-40.0.0}
+        platform: linux/amd64
+        restart: always
+        links:
+            - memcached1:memcached1
+            - memcached2:memcached2
+            - memcached3:memcached3
+            - memcached4:memcached4
+            - memcached5:memcached5
+        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11211
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11211:11211"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MVROUTER 2    ----------------------------------------------------------------#
+
+    mcrouter2:
+        image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
+        container_name: mcrouter2-${MCROUTER_VERSION:-40.0.0}
+        platform: linux/amd64
+        restart: always
+        links:
+            - memcached1:memcached1
+            - memcached2:memcached2
+            - memcached3:memcached3
+            - memcached4:memcached4
+            - memcached5:memcached5
+        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11212
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11221:11211"  # Schimbat portul extern
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    #   MVROUTER 3    ----------------------------------------------------------------#
+
+    mcrouter3:
+        image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
+        container_name: mcrouter3-${MCROUTER_VERSION:-40.0.0}
+        platform: linux/amd64
+        restart: always
+        links:
+            - memcached1:memcached1
+            - memcached2:memcached2
+            - memcached3:memcached3
+            - memcached4:memcached4
+            - memcached5:memcached5
+        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11213
+        ports:
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11222:11211"  # Schimbat portul extern
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - stack_private_network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+# ----------------------------------------------------------------------------------#

@@ -1,0 +1,320 @@
+<p align="center">
+    <a href="https://twitter.com/coozila" target="_blank"><img src="https://img.shields.io/twitter/follow/:coozila" alt="Follow on Twitter" /></a>
+</p>
+
+<p align="center">
+    <img width="233px" height="auto" src="https://www.coozila.com/static/themes/prometheus/img/coozila.png" />
+</p>
+<p align="center">
+    <a href="https://github.com/coozila/memcached-cluster/releases" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=downloads&query=downloads&url=https://raw.githubusercontent.com/coozila/memcached-cluster/dev/metrics.yml" alt="Total Downloads" /></a>
+    <a href="https://github.com/coozila/memcached-cluster/blob/dev/LICENSE" target="_blank"><img src="https://img.shields.io/badge/license-MIT-1c7ed6" alt="License" /></a>
+</p>
+
+## Sponsors
+
+**If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/coozila)
+
+<p align="center">
+  <a href="https://github.com/sponsors/coozila">
+  </a>
+</p>
+
+# Memcached Cluster
+
+![Cluster](assets/cluster-coozila-memcached.png)
+
+## Coozila! Docker Package APP for Memcached Cluster with Memcached and McRouter
+
+The **Coozila! Package for Memcached Cluster** integrates **Memcached** and **McRouter**, delivering a cutting-edge caching solution tailored for modern applications. Designed to maximize scalability and performance, this package empowers developers to deploy a distributed caching layer effortlessly, alleviating database load while significantly improving response times.
+
+### Why Choose Coozila?
+
+- **Simplified Scalability**: Deploy a highly efficient distributed caching layer using pre-configured Docker packages, reducing complexity and ensuring faster response times.
+- **Intelligent Request Routing**: Take advantage of McRouter's advanced capabilities, including prefix routing, replicated pools, and failover mechanisms, for seamless cache operation.
+- **Blazing-Fast Performance**: With Memcached at its core, Coozila! offers a high-speed, fault-tolerant caching system optimized for high-demand environments.
+- **Dynamic Configuration**: Easily manage and scale your caching infrastructure with live updates, ensuring zero downtime.
+- **Multi-Level Caching**: Implement tiered caching with local and remote caches for enhanced data retrieval efficiency.
+
+### Cluster Variants
+
+We provide three variants of the Memcached cluster:
+
+1. **Basic Cluster with 3 Memcached Instances and 1 Mcrouter Instance**:
+   - Configuration file: [docker-compose.yaml](docker-compose.yaml)
+   - Documentation: [Basic Cluster Documentation](SETUP_CLUSTER_1_3.md)
+
+2. **Intermediate Cluster with 5 Memcached Instances and 3 Mcrouter Instances**:
+   - Configuration file: [docker-compose-cluster-3-5.yml](docker-compose-cluster-3-5.yml)
+   - Documentation: [Cluster 3-5 Documentation](SETUP_CLUSTER_3_5.md)
+
+3. **Advanced Cluster with 9 Memcached Instances and 3 Mcrouter Instances**:
+   - Configuration file: [docker-compose-cluster-3-9.yml](docker-compose-cluster-3-9.yml)
+   - Documentation: [Cluster 3-9 Documentation](SETUP_CLUSTER_3_9.md)
+
+
+### Core Features
+
+- **High Availability**: Ensure reliable data storage with integrated failover and replication mechanisms, even during node failures.
+- **Optimized Caching**: Leverage McRouter to route requests efficiently across multiple Memcached servers, achieving better load balancing and resource management.
+- **Advanced Routing Logic**: Configure routing based on prefixes, clusters, or custom policies using McRouter’s modular routing handles.
+- **Cold Cache Warmup**: Bring new cache nodes online seamlessly without impacting application performance.
+- **Rich Monitoring Tools**: Access detailed statistics and debugging commands for complete visibility into cache performance.
+- **Security First**: Utilize built-in SSL support and IPv6 compatibility to secure data in transit.
+- **Multi-Threaded Architecture**: Harness the power of multi-core systems for efficient request handling.
+
+### Easy Deployment
+
+The package comes with pre-configured Docker containers and a straightforward setup process, enabling developers to get started quickly. With Coozila!, you can build a scalable, reliable caching infrastructure in minutes.
+
+### Who Is It For?
+
+- **Developers**: Aiming to enhance application performance through efficient caching strategies.
+- **Organizations**: Looking to reduce database overhead while achieving faster response times with minimal complexity.
+- **Teams**: In need of a robust and scalable caching solution for web applications, APIs, or data-intensive systems.
+
+#### Specific Use Cases:
+
+- **Web Developers**: Creating high-traffic websites or APIs.
+- **E-Commerce Platforms**: Managing real-time product availability and pricing data.
+- **Streaming Services**: Overseeing user preferences, recommendations, and playback data.
+- **Enterprises**: Running data-intensive applications that require high availability and responsiveness.
+
+Elevate your application's performance with the **Coozila! Memcached Cluster**—a powerful caching solution that combines the reliability of Memcached with the flexibility of McRouter. Whether you're managing high-demand environments or planning for future growth, Coozila! is your ideal package for effortless deployment and unparalleled efficiency.
+
+## Contributing
+
+We welcome contributions to this project! Please refer to our [Contributing Guidelines](CONTRIBUTING.md) for detailed instructions on how to contribute.
+
+For questions or contributions, feel free to contact the **Coozila! Labs** at [labs@coozila.com](mailto:lab@coozila.com).
+
+
+### Code of Conduct
+
+We are committed to fostering an inclusive and respectful environment. Please review our [Contributor Code of Conduct](CODE_OF_CONDUCT.md) for guidelines on acceptable behavior.
+
+## References and Credits
+
+We extend our gratitude to the creators and maintainers of the tools and technologies that power this project. Below are some key references:
+
+### Websites:
+
+- [Introducing McRouter: A Memcached Protocol Router for Scaling Memcached Deployments](https://engineering.fb.com/2014/09/15/web/introducing-mcrouter-a-memcached-protocol-router-for-scaling-memcached-deployments/)
+- [Docker Hub Official Website](https://hub.docker.com/)
+- [Memcached Official Website](https://memcached.org/)
+- [Coozila! AGI Official Website](https://agi.coozila.com/)
+- [Coozila! AGI Developer API](https://agi.coozila.com/api/docs/)
+- [Coozila! Official Website](https://www.coozila.com/)
+- [Github Official Website](https://github.com/)
+
+### Github:
+
+- [McRouter GitHub Repository](https://github.com/facebook/mcrouter)
+- [Memcached GitHub Repository](https://github.com/memcached/memcached)
+- [Coozila! Github Repository](https://github.com/coozila)
+
+### AI Contributions:
+
+We would also like to acknowledge **Hypatia AI**, a project of Coozila! AGI, for providing intelligent assistance and support in developing this documentation and enhancing the overall project experience.
+
+### What is Memcached?
+
+Memcached is a high-performance, distributed memory object caching system, generic in nature, but intended for use in speeding up dynamic web applications by alleviating database load. It is designed to cache data and reduce the number of times a database must be queried, thereby improving the speed and performance of applications.
+
+### What is McRouter?
+
+McRouter is a high-performance Memcached router developed by Facebook. It acts as a proxy between clients and Memcached servers, allowing for better load balancing and routing of requests. McRouter can be used to scale Memcached deployments efficiently, enabling applications to handle larger amounts of cached data and improving overall performance.
+
+### Overview of Memcached, and McRouter
+
+Memcached, and McRouter work together to provide a robust caching and database solution for high-demand applications. By utilizing Memcached for caching frequently accessed data, applications can significantly reduce response times and database load. Memcached, with its distributed architecture, ensures that data is stored reliably and can be accessed quickly, while McRouter optimizes the routing of requests to Memcached servers.
+
+## Project Structure
+
+- **Docker Compose Configuration**: Defines services for Memcached and McRouter.
+- **Networks**: Configured for application services.
+
+## Services
+
+### Memcached Servers
+
+Three instances of Memcached are configured:
+
+1. **memcached1**
+2. **memcached2**
+3. **memcached3**
+
+Each instance:
+- Uses the image `memcached:latest`.
+- Sets memory lock limits.
+- Maps port `11211` to local ports `11212`, `11213`, and `11214`.
+- Persists data in separate volumes.
+
+### McRouter
+
+- Image: `coozila/mcrouter:40.0.0`
+- Links to the three Memcached instances.
+- Command configuration for routing operations.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+- [Docker Engine](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+## Getting Started
+
+### 1. Create the Private Network
+
+Before building the containers and images, you must manually create the `stack_private_network` Exemple:
+
+```bash
+docker network create --driver bridge stack_private_network --subnet=172.16.0.0/16
+```
+
+Alternatively, you can personalize your network according to your preferences directly in your docker-compose.yaml file like this:
+
+
+```yaml
+
+#   STACK NETWORK    ---------------------------------------------------------------#
+
+networks:                                                                           #
+
+    #   Private network for application services    --------------------------------#
+
+    stack_private_network:
+        driver: bridge 
+        driver_opts:
+            com.docker.network.enable_ipv6: "false"
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.238.0/24
+                  gateway: 172.16.238.1
+
+
+# ----------------------------------------------------------------------------------#
+
+```
+
+> [!TIP]
+> For better performance, using the host network mode is often the best choice, depending on the structure of the application in which you want to integrate the cluster. This mode can reduce latency and improve speed, but keep in mind that it may expose your services directly to the host network.
+> 
+> Additionally, Docker is not the most efficient for managing disk I/O. It is advisable to manage volumes on an alternative path or directly by the system, or to use another file system. This may require customization to achieve the best performance.
+> 
+> Depending on your specific configuration and preferences, you should choose the solution that best fits your needs. Assessing the trade-offs between ease of use, performance, and security is essential. In some cases, using the default Docker settings may be sufficient, while in others, adapting the network and volume configuration may bring significant benefits in terms of speed and operational efficiency.
+> 
+> Ultimately, the choice of network mode and volume management strategy should align with your application's requirements and the environment in which it will be deployed.
+> 
+> For more exemples see [Docker Engine Network](https://docs.docker.com/engine/network/)
+
+### 2. Clone the Repository
+
+Clone the Coozila! Apps repository to your local machine:
+
+```bash
+git clone https://github.com/coozila/memcached-cluster.git
+cd memcached-cluster
+```
+
+> [!TIP]
+>  Before proceeding, please ensure you are on the correct branch and using the appropriate version of the application. The `dev` branch is continuously updated and may contain untested errors. For stability, it is recommended to download and use version `1.0.0`, which is the last published stable version.
+
+### 3. Checkout Version 1.0.0
+
+Switch to the stable version `1.0.0`:
+
+```bash
+git checkout 1.0.0
+```
+
+### 4. Prepare the Environment Variables
+
+Copy the example environment file and set the necessary variables:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file to set the required environment variables.
+
+### 5. Launch the Application
+
+Run the following command to launch the application:
+
+```bash
+docker compose up -d
+```
+
+### 6. Accessing the Services
+
+- Memcached instances:
+  - Instance 1: [http://127.0.0.1:11212](http://127.0.0.1:11212)
+  - Instance 2: [http://127.0.0.1:11213](http://127.0.0.1:11213)
+  - Instance 3: [http://127.0.0.1:11214](http://127.0.0.1:11214)
+
+- McRouter interface:
+  - [http://127.0.0.1:11211](http://127.0.0.1:11211)
+
+### 7. Accessing the Logs
+
+```bash
+docker-compose -f docker-compose-cluster-3-9.yml logs -f
+```
+
+## Cleanup
+
+To stop and remove all containers and networks, run:
+
+```bash
+docker compose down
+```
+
+## Installation Assistance
+
+If you would like assistance with the installation of this product, please contact **Coozila! Labs** at [labs@coozila.com](mailto:lab@coozila.com). Our team is ready to help you with the installation process and ensure a smooth setup.
+
+Based on the size and complexity of your project, we will provide you with a tailored pricing quote.
+
+For purchasing the installation, please visit the following link: [Coozila Docker Package App for Memcached](https://www.coozila.com/plus/view-product/coozila-docker-package-app-for-memcached).
+
+You can also check out the official Coozila! Labs page for more information: [Coozila! Labs](https://www.coozila.com/plus/view-organization-profile/coozila-labs).
+
+For any inquiries, feel free to reach out through our contact page: [Contact Coozila!](https://www.coozila.com/plus/contact).
+
+### After Purchase Notes
+
+After your purchase, please provide the following information via email:
+
+- Server login credentials
+- An SSH key for secure access
+- Details about the project you wish to integrate
+
+## Additional Documentation
+
+For more details, please refer to the main repository: 
+
+- [Coozila! Apps](https://github.com/coozila/apps).
+- [Mcrouter](https://github.com/facebook/mcrouter)
+- [Memcached](https://github.com/memcached/memcached/tree/master/doc)
+
+## Trademarks and Copyright
+
+This software listing is packaged by Coozila!. All trademarks mentioned are the property of their respective owners, and their use does not imply any affiliation or endorsement.
+
+### Copyright
+
+Copyright (C) 2009 - 2024 Coozila! Licensed under the MIT License.
+
+### Licenses
+
+- **Coozila!**: [MIT License](https://github.com/coozila/memcached-cluster/blob/dev/LICENSE)
+- **McRouter**: [McRouter License](https://github.com/facebook/mcrouter/blob/main/LICENSE)
+- **Memcached**: [Memcached License](https://github.com/memcached/memcached/blob/master/LICENSE)
+
+## Disclaimer
+
+This product is provided "as is," without any guarantees or warranties regarding its functionality, performance, or reliability. By using this product, you acknowledge that you do so at your own risk. Coozila! and its contributors are not liable for any issues, damages, or losses that may arise from the use of this product. We recommend thoroughly testing the product in your own environment before deploying it in a production setting.
+
+Happy coding!

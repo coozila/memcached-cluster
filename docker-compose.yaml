@@ -1,0 +1,224 @@
+# ----------------------------------------------------------------------------------#
+#                                                                                   #
+#   Copyright   (C) 2009 - 2024 Coozila! MIT License                                #
+#   Coozila! Team    lab@coozila.com                                                #
+#                                                                                   #
+# ----------------------------------------------------------------------------------#
+
+
+#   STACK NETWORK    ---------------------------------------------------------------#
+
+networks:                                                                           #
+
+    #   Private network for application services    --------------------------------#
+
+    stack_private_network:
+        #
+        #   SSH command to create the Docker network: docker network create --driver bridge stack_private_network --subnet=172.16.0.0/16
+        #
+
+        external: true
+
+
+# ----------------------------------------------------------------------------------#
+
+#   STACK SERVICES    --------------------------------------------------------------#
+
+services:                                                                           #
+
+    
+    #   MEMCACHED SERVER 1    ------------------------------------------------------#
+
+    memcached1:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        ulimits:
+            #
+            #   Set memory lock limits
+            #
+
+            memlock: -1
+
+        ports:
+            #
+            #   Port mapping for Memcached
+            #
+
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11212:11211"
+
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+        networks:
+            #
+            #   Connect to the private network
+            #
+
+            - stack_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+            #
+            #   Setup MEMCACHED_HOSTNAME variable in .env file
+            #
+
+            - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
+
+
+    #   MEMCACHED SERVER 2    ------------------------------------------------------#
+
+    memcached2:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        ulimits:
+            #
+            #   Set memory lock limits
+            #
+
+            memlock: -1
+
+        ports:
+            #
+            #   Port mapping for Memcached
+            #
+
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11213:11211"
+
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+        networks:
+            #
+            #   Connect to the private network
+            #
+
+            - stack_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+            #
+            #   Setup MEMCACHED_HOSTNAME variable in .env file
+            #
+
+            - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
+
+
+    #   MEMCACHED SERVER 3    ------------------------------------------------------#
+
+    memcached3:
+        image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
+        ulimits:
+            #
+            #   Set memory lock limits
+            #
+
+            memlock: -1
+
+        ports:
+            #
+            #   Port mapping for Memcached
+            #
+
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11214:11211"
+
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+        networks:
+            #
+            #   Connect to the private network
+            #
+
+            - stack_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+            #
+            #   Setup MEMCACHED_HOSTNAME variable in .env file
+            #
+
+            - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
+
+
+    #   MVROUTER    ----------------------------------------------------------------#
+
+    mcrouter:
+        image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
+        container_name: mcrouter-${MCROUTER_VERSION:-40.0.0}.${MCROUTER_HOSTNAME:-localhost}
+        platform: linux/amd64
+        restart: always
+        links:
+            #
+            #   Links to Memcached instances
+            #
+
+            - memcached1:memcached1
+            - memcached2:memcached2
+            - memcached3:memcached3
+
+        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11211
+        ports:
+            #
+            #   Port mapping for Mcrouter
+            #
+
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11211:11211"
+
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+        networks:
+            #
+            #   Connect to the private network
+            #
+
+            - stack_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+
+            - "host.docker.internal:host-gateway"
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+            #
+            #   Setup MCROUTER_HOSTNAME variable in .env file
+            #
+
+            - "${MCROUTER_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
+
+
+# ----------------------------------------------------------------------------------#
