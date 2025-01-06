@@ -1,54 +1,38 @@
 import requests
-import json
 
-# Detalii despre repository
+# Repository details
 owner = "coozila"
 repo = "memcached-cluster"
 url = f"https://api.github.com/repos/{owner}/{repo}"
 
-# Obține date despre repository
-response = requests.get(url)
-data = response.json()
-
-# Initializează metricile
-metrics = {
-    'open_issues': data.get('open_issues_count', 0),
-    'downloads': 0,  # Aceasta va fi calculată din releases
-    'releases': {},
-    'tags': {},
-    'branches': {},
-}
-
-# Obține date despre release-uri
+# Get release data
 releases_url = f"{url}/releases"
 releases_response = requests.get(releases_url)
 releases = releases_response.json()
 
+downloads = {}
 for release in releases:
-    download_count = sum(asset.get('download_count', 0) for asset in release.get('assets', []))
-    metrics['releases'][release['tag_name']] = download_count
+    downloads[release['tag_name']] = sum(asset.get('download_count', 0) for asset in release.get('assets', []))
 
-# Obține date despre tag-uri
-tags_url = f"{url}/tags"
-tags_response = requests.get(tags_url)
-tags = tags_response.json()
-
-for tag in tags:
-    metrics['tags'][tag['name']] = 0  # Inițializat cu 0, pentru a reflecta statisticile dorite
-
-# Obține date despre branch-uri
+# Get branch data
 branches_url = f"{url}/branches"
 branches_response = requests.get(branches_url)
 branches = branches_response.json()
 
-for branch in branches:
-    metrics['branches'][branch['name']] = {
-        'commits': branch['commit']['commit']['message'],  # Optional: mesajul ultimului commit
-        'downloads': 0  # Inițializat la 0, deoarece GitHub nu urmărește descărcările aici
-    }
+branch_downloads = {branch['name']: 0 for branch in branches}
 
-# Salvează metricile în fișier JSON
-with open('metrics.json', 'w') as file:
-    json.dump(metrics, file, indent=4)
+# Get open issues data
+issues_url = f"{url}/issues"
+issues_response = requests.get(issues_url)
+issues = issues_response.json()
 
-print(f"Metrics: {metrics}")
+open_issues_count = sum(1 for issue in issues if 'pull_request' not in issue)
+
+# Final JSON structure
+metrics = {
+    "open_issues": open_issues_count,
+    "downloads": downloads,
+    "branches": branch_downloads
+}
+
+print(metrics)

@@ -1,23 +1,10 @@
 {
-    "open_issues": 0,
-    "downloads": 0,  // Acest număr total poate fi actualizat în funcție de descărcările reale
-    "releases": {
-        "1.0.0": 10,
-        "1.1.0": 0,
-        "2.0.0": 0
-    },
-    "tags": {
-        "1.0.0": 0,
-        "1.1.0": 0,
-        "2.0.0": 0
+    "open_issues": 3,
+    "downloads": {
+        "1.0.0": 10
     },
     "branches": {
-        "main": {
-            "commits": "Latest commit message on main branch",  // Mesajul ultimului commit
-            "downloads": 0
-        },
         "dev": {
-            "commits": "Latest commit message on dev branch",  // Mesajul ultimului commit
             "downloads": 0
         }
     }
