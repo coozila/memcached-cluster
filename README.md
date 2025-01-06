@@ -260,7 +260,7 @@ docker compose up -d
 ### 7. Accessing the Logs
 
 ```bash
-docker-compose -f docker-compose-cluster-3-9.yaml logs -f
+docker-compose -f docker-compose.yaml logs -f
 ```
 
 ## Cleanup

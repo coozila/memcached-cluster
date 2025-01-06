@@ -1,35 +1,45 @@
 import requests
-import yaml
+import json
 
 # GitHub repository details
 owner = "coozila"
 repo = "memcached-cluster"
 url = f"https://api.github.com/repos/{owner}/{repo}"
 
-# Fetch repository data
-response = requests.get(url)
-data = response.json()
-
-# Extract required metrics
-metrics = {
-    'open_issues': data.get('open_issues_count', 0),
-    'downloads': 0  # This will be handled separately if you track downloads as assets
-}
-
 # Fetch release data for download counts
 releases_url = f"{url}/releases"
 releases_response = requests.get(releases_url)
 releases = releases_response.json()
 
+downloads_per_release = {}
 total_downloads = 0
+
+# Calculate downloads per release and total downloads
 for release in releases:
-    for asset in release.get('assets', []):
-        total_downloads += asset.get('download_count', 0)
+    # Verifică dacă release-ul are assets
+    if 'assets' in release and release.get('tag_name') == "1.0.0":  # Use only the existing tag
+        download_count = sum(asset.get('download_count', 0) for asset in release['assets'])
+        downloads_per_release[release['tag_name']] = download_count
+        total_downloads += download_count
 
-metrics['downloads'] = total_downloads
+# Fetch repository data
+repo_response = requests.get(url)
+repo_data = repo_response.json()
 
-# Save metrics to YAML file
-with open('metrics.yaml', 'w') as file:
-    yaml.dump(metrics, file)
+# Extract required metrics
+metrics = {
+    'open_issues': repo_data.get('open_issues_count', 0),
+    'downloads': downloads_per_release,  # Include downloads for each release
+    'total_downloads': total_downloads,    # Add total downloads
+    'branches': {
+        'dev': {
+            'downloads': 0  # You can update this if needed
+        }
+    }
+}
+
+# Save metrics to JSON file
+with open('metrics.json', 'w') as file:
+    json.dump(metrics, file, indent=4)
 
 print(f"Metrics: {metrics}")
