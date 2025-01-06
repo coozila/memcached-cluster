@@ -1,15 +1,15 @@
-# Intermediate Memcached Cluster Setup Documentation
+# Advanced Memcached Cluster Setup Documentation
 
 ## Overview
-This document outlines the setup of an intermediate Memcached cluster using Docker, Docker Compose, and mcrouter. The cluster consists of 5 Memcached instances and 3 mcrouter instances, designed to provide a more robust caching solution for production environments.
+This document details the setup of an advanced Memcached cluster using Docker, Docker Compose, and mcrouter. The cluster consists of 9 Memcached instances and 3 mcrouter instances, designed for high-demand applications requiring exceptional performance and scalability.
 
 ### Recommended Server Specifications
-For the Intermediate Cluster configuration, we recommend using a cloud server instance with the following specifications:
-- **Instance Type**: **t3.large** (or equivalent)
+For the Advanced Cluster configuration, we recommend using a cloud server instance with the following specifications:
+- **Instance Type**: **m5.large** (or equivalent)
 - **CPU**: 2 vCPUs
-- **RAM**: 8 GB
+- **RAM**: 16 GB
 
-This configuration strikes a balance between cost and performance, making it suitable for applications that experience moderate to high traffic.
+This configuration provides ample resources to handle a large number of requests and support complex applications, ensuring high performance under heavy load.
 
 ### Architecture
 - **Memcached Instances**: The cluster contains 9 instances of Memcached, each responsible for storing key-value pairs in memory.
