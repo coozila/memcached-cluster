@@ -1,35 +1,54 @@
 import requests
-import yaml
+import json
 
-# GitHub repository details
+# Detalii despre repository
 owner = "coozila"
 repo = "memcached-cluster"
 url = f"https://api.github.com/repos/{owner}/{repo}"
 
-# Fetch repository data
+# Obține date despre repository
 response = requests.get(url)
 data = response.json()
 
-# Extract required metrics
+# Initializează metricile
 metrics = {
     'open_issues': data.get('open_issues_count', 0),
-    'downloads': 0  # This will be handled separately if you track downloads as assets
+    'downloads': 0,  # Aceasta va fi calculată din releases
+    'releases': {},
+    'tags': {},
+    'branches': {},
 }
 
-# Fetch release data for download counts
+# Obține date despre release-uri
 releases_url = f"{url}/releases"
 releases_response = requests.get(releases_url)
 releases = releases_response.json()
 
-total_downloads = 0
 for release in releases:
-    for asset in release.get('assets', []):
-        total_downloads += asset.get('download_count', 0)
+    download_count = sum(asset.get('download_count', 0) for asset in release.get('assets', []))
+    metrics['releases'][release['tag_name']] = download_count
 
-metrics['downloads'] = total_downloads
+# Obține date despre tag-uri
+tags_url = f"{url}/tags"
+tags_response = requests.get(tags_url)
+tags = tags_response.json()
 
-# Save metrics to YAML file
-with open('metrics.yaml', 'w') as file:
-    yaml.dump(metrics, file)
+for tag in tags:
+    metrics['tags'][tag['name']] = 0  # Inițializat cu 0, pentru a reflecta statisticile dorite
+
+# Obține date despre branch-uri
+branches_url = f"{url}/branches"
+branches_response = requests.get(branches_url)
+branches = branches_response.json()
+
+for branch in branches:
+    metrics['branches'][branch['name']] = {
+        'commits': branch['commit']['commit']['message'],  # Optional: mesajul ultimului commit
+        'downloads': 0  # Inițializat la 0, deoarece GitHub nu urmărește descărcările aici
+    }
+
+# Salvează metricile în fișier JSON
+with open('metrics.json', 'w') as file:
+    json.dump(metrics, file, indent=4)
 
 print(f"Metrics: {metrics}")
