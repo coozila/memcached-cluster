@@ -1,12 +1,4 @@
 {
-    "open_issues": 0,
-    "downloads": {
-        "1.0.0": 10
-    },
-    "total_downloads": 20,  // Totalul ar trebui să fie suma descărcărilor
-    "branches": {
-        "dev": {
-            "downloads": 10
-        }
-    }
+  "open_issues": 0,
+  "downloads": 102
 }
