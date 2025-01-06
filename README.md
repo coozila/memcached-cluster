@@ -277,7 +277,7 @@ If you would like assistance with the installation of this product, please conta
 
 Based on the size and complexity of your project, we will provide you with a tailored pricing quote.
 
-For purchasing the installation, please visit the following link: [Coozila Docker Package App for Memcached](https://www.coozila.com/plus/view-product/coozila-docker-package-app-for-memcached).
+For purchasing the installation, please visit the following link: [Coozila Docker Package App for Memcached](https://www.coozila.com/plus/view-product/wd1zv9).
 
 You can also check out the official Coozila! Labs page for more information: [Coozila! Labs](https://www.coozila.com/plus/view-organization-profile/coozila-labs).
 
