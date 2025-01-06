@@ -3,6 +3,14 @@
 ## Overview
 This document provides instructions for setting up a basic Memcached cluster using Docker, Docker Compose, and mcrouter. The cluster consists of 3 Memcached instances and 1 mcrouter instance, designed to deliver efficient caching for web applications.
 
+### Recommended Server Specifications
+For the Basic Cluster configuration, we recommend using a cloud server instance with the following specifications:
+- **Instance Type**: **t3.medium** (or equivalent)
+- **CPU**: 2 vCPUs
+- **RAM**: 4 GB
+
+This setup provides sufficient resources to handle moderate request volumes and ensures efficient caching performance for small applications or development environments.
+
 ### Architecture
 - **Memcached Instances**: The cluster includes 3 instances of Memcached, each responsible for storing key-value pairs in memory.
 - **Mcrouter Instance**: There is 1 instance of mcrouter that acts as a routing layer to distribute requests among the Memcached instances.
