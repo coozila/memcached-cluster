@@ -21,7 +21,7 @@ If you want to support our project and help us grow it, you can [become a sponso
 
 # Memcached Cluster
 
-![Cluster](assets/cluster-coozila-memcached.png)
+![Cluster](assets/coozila-memcached-cluster.png)
 
 ## Coozila! Docker Package APP for Memcached Cluster with Memcached and McRouter
 
