@@ -8,25 +8,55 @@
 
 #   STACK NETWORK    ---------------------------------------------------------------#
 
-networks:                                                                           #
+networks:
 
-    #   Private network for application services    --------------------------------#
+    #   External Private network for all stack services    --------------------------#
 
     stack_private_network:
         #
         #   SSH command to create the Docker network: docker network create --driver bridge stack_private_network --subnet=172.16.0.0/16
         #
-
+        driver: bridge
         external: true
 
+    # -------------------------------------------------------------------------------#
+
+    #   Public network for McRouter    ----------------------------------------------#
+
+    #mcrouter_public_network:
+        #
+        #   Note: This network is intended for public access through a proxy server.
+        #
+        #external: true
+
+    # -------------------------------------------------------------------------------#
+
+    #   Internal Private network for memcached services    --------------------------#
+
+    memcached_private_network:
+        #
+        #   Setup Network Driver in .env or use default bridge
+        #
+        driver: ${MEMCACHED_PRIVATE_DRIVER:-bridge}
+        external: false
+
+    # -------------------------------------------------------------------------------#
+
+    #   Internal Private network for mcrouter services    ---------------------------#
+
+    mcrouter_private_network:
+        #
+        #   Setup Network Driver in .env or use default bridge
+        #
+        driver: ${MCROUTER_PRIVATE_DRIVER:-bridge}
+        external: false
 
 # ----------------------------------------------------------------------------------#
 
 #   STACK SERVICES    --------------------------------------------------------------#
 
-services:                                                                           #
+services:
 
-    
     #   MEMCACHED SERVER 1    ------------------------------------------------------#
 
     memcached1:
@@ -36,7 +66,7 @@ services:                                                                       
             #   Set memory lock limits
             #
 
-            memlock: -1
+            memlock: ${MEMCACHED_MEMLOCK:-1}
 
         ports:
             #
@@ -57,7 +87,7 @@ services:                                                                       
             #   Connect to the private network
             #
 
-            - stack_private_network
+            memcached_private_network:
 
         extra_hosts:
             #
@@ -74,6 +104,8 @@ services:                                                                       
             - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
 
 
+    # ------------------------------------------------------------------------------#
+
     #   MEMCACHED SERVER 2    ------------------------------------------------------#
 
     memcached2:
@@ -83,7 +115,7 @@ services:                                                                       
             #   Set memory lock limits
             #
 
-            memlock: -1
+            memlock: ${MEMCACHED_MEMLOCK:-1}
 
         ports:
             #
@@ -104,7 +136,7 @@ services:                                                                       
             #   Connect to the private network
             #
 
-            - stack_private_network
+            memcached_private_network:
 
         extra_hosts:
             #
@@ -121,6 +153,8 @@ services:                                                                       
             - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
 
 
+    # ------------------------------------------------------------------------------#
+
     #   MEMCACHED SERVER 3    ------------------------------------------------------#
 
     memcached3:
@@ -130,7 +164,7 @@ services:                                                                       
             #   Set memory lock limits
             #
 
-            memlock: -1
+            memlock: ${MEMCACHED_MEMLOCK:-1}
 
         ports:
             #
@@ -151,7 +185,7 @@ services:                                                                       
             #   Connect to the private network
             #
 
-            - stack_private_network
+            memcached_private_network:
 
         extra_hosts:
             #
@@ -168,12 +202,15 @@ services:                                                                       
             - "${MEMCACHED_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
 
 
-    #   MVROUTER    ----------------------------------------------------------------#
+    # ------------------------------------------------------------------------------#
 
-    mcrouter:
+    #   MCROUTER1    ---------------------------------------------------------------#
+
+    mcrouter1:
         image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
-        container_name: mcrouter-${MCROUTER_VERSION:-40.0.0}.${MCROUTER_HOSTNAME:-localhost}
+        container_name: mcrouter-${MCROUTER_VERSION:-40.0.0}.${MCROUTER1_HOSTNAME:-mcrouter1}
         platform: linux/amd64
+        hostname: ${MCROUTER_HOSTNAME:-localhost}
         restart: always
         links:
             #
@@ -184,7 +221,7 @@ services:                                                                       
             - memcached2:memcached2
             - memcached3:memcached3
 
-        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11211
+        command: mcrouter --config-file=/etc/mcrouter/mcrouter_config.json -p 11211
         ports:
             #
             #   Port mapping for Mcrouter
@@ -199,12 +236,27 @@ services:                                                                       
 
             - /etc/localtime:/etc/localtime:ro
 
+            #
+            #   Map config file
+            #
+
+            #- ./config/basic_mcrouter_config.json:/etc/mcrouter/mcrouter_config.json
+
+            #
+            #   Map failover config file 
+            #
+
+            - ./config/basic_mcrouter_failover_config.json:/etc/mcrouter/mcrouter_config.json
+
         networks:
             #
-            #   Connect to the private network
+            #   Connect to public and  private networka
             #
 
             - stack_private_network
+            - memcached_private_network
+            # - mcrouter_public_network
+            - mcrouter_private_network
 
         extra_hosts:
             #
@@ -218,7 +270,7 @@ services:                                                                       
             #   Setup MCROUTER_HOSTNAME variable in .env file
             #
 
-            - "${MCROUTER_HOSTNAME:-localhost}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
+            - "${MCROUTER1_HOSTNAME:-mcrouter1}:${LOCAL_LISTEN_ADDR:-127.0.0.1}"
 
 
 # ----------------------------------------------------------------------------------#

@@ -18,7 +18,7 @@ This configuration provides ample resources to handle a large number of requests
 ## Cluster Configuration
 
 ### Docker Compose File
-The configuration is defined in a `docker-compose-cluster-3-9.yaml` file, which is used to create and manage the cluster's services.
+The configuration is defined in a `docker-compose-cluster-3-9.yaml` file, which is used to create and manage the cluster's services located in the `config` folder.
 
 ### Key Components
 - **Memcached Instances**: 9 instances of Memcached are configured, each with unique ports to avoid conflicts. They are responsible for storing and retrieving key-value pairs.

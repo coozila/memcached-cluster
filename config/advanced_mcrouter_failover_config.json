@@ -1,0 +1,44 @@
+{
+    "pools": {
+      "A": {
+        "servers": [
+          "memcached1:11211",
+          "memcached2:11211",
+          "memcached3:11211",
+          "memcached4:11211",
+          "memcached5:11211",
+          "memcached6:11211",
+          "memcached7:11211",
+          "memcached8:11211",
+          "memcached9:11211"
+        ]
+      }
+    },
+    "route": {
+      "type": "OperationSelectorRoute",
+      "operation_policies": {
+        "get": {
+          "type": "FailoverRoute",
+          "timeout": "100ms",
+          "success": "maxSuccess",
+          "route": {
+            "type": "PoolRoute",
+            "pool": "A"
+          }
+        },
+        "add": {
+          "type": "PoolRoute",
+          "pool": "A"
+        },
+        "delete": {
+          "type": "PoolRoute",
+          "pool": "A"
+        },
+        "set": {
+          "type": "PoolRoute",
+          "pool": "A"
+        }
+      }
+    }
+  }
+  

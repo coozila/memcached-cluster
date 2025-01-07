@@ -18,11 +18,11 @@ This setup provides sufficient resources to handle moderate request volumes and 
 ## Cluster Configuration
 
 ### Docker Compose File
-The configuration is defined in the `docker-compose.yaml` file, which is used to create and manage the cluster's services.
+The configuration is defined in the `docker-compose.yaml` file, which is used to create and manage the cluster's services located in the `config` folder. 
 
 ### Key Components
 - **Memcached Instances**: 3 instances of Memcached are configured, each with unique ports to avoid conflicts. They are responsible for storing and retrieving key-value pairs.
-- **Mcrouter Instance**: 1 instance of mcrouter is set up to route requests to the Memcached instances. The mcrouter instance is configured with a command line that specifies the routing policy.
+- **Mcrouter Instance**: 1 instance of mcrouter is set up to route requests to the Memcached instances. The mcrouter instance is configured with a command line that specifies the routing policy. 
 - **Networking**: All services are connected to a private Docker network to facilitate communication.
 
 ## Running the Cluster
@@ -46,7 +46,7 @@ docker-compose -f docker-compose.yaml logs -f
 To stop and remove all containers and networks, run:
 
 ```bash
-docker compose down
+docker-compose down
 ```
 
 ## Data Distribution in the Memcached Cluster
@@ -84,4 +84,4 @@ In this basic Memcached cluster, data distribution is achieved through sharding 
 6. Mcrouter hashes the key again, finds it belongs to `memcached1`, and retrieves the value.
 
 ## Conclusion
-In summary, this basic setup provides a straightforward caching solution using Memcached, with mcrouter managing the routing and sharding. This architecture is suitable for applications requiring efficient caching with minimal complexity.
+In summary, this basic setup provides a straightforward caching solution using Memcached, with mcrouter managing the routing and sharding. This architecture is suitable for applications requiring efficient caching with minimal complexity. 

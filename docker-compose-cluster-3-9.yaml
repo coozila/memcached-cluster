@@ -7,18 +7,54 @@
 
 #   STACK NETWORK    ---------------------------------------------------------------#
 
-networks:                                                                           #
+networks:
 
-    #   Private network for application services    --------------------------------#
+    #   External Private network for all stack services    --------------------------#
 
     stack_private_network:
+        #
+        #   SSH command to create the Docker network: docker network create --driver bridge stack_private_network --subnet=172.16.0.0/16
+        #
+        driver: bridge
         external: true
+
+    # -------------------------------------------------------------------------------#
+
+    #   Public network for McRouter    ----------------------------------------------#
+
+    #mcrouter_public_network:
+        #
+        #   Note: This network is intended for public access through a proxy server.
+        #
+        #external: true
+
+    # -------------------------------------------------------------------------------#
+
+    #   Internal Private network for memcached services    --------------------------#
+
+    memcached_private_network:
+        #
+        #   Setup Network Driver in .env or use default bridge
+        #
+        driver: ${MEMCACHED_PRIVATE_DRIVER:-bridge}
+        external: false
+
+    # -------------------------------------------------------------------------------#
+
+    #   Internal Private network for mcrouter services    ---------------------------#
+
+    mcrouter_private_network:
+        #
+        #   Setup Network Driver in .env or use default bridge
+        #
+        driver: ${MCROUTER_PRIVATE_DRIVER:-bridge}
+        external: false
 
 # ----------------------------------------------------------------------------------#
 
 #   STACK SERVICES    --------------------------------------------------------------#
 
-services:                                                                           #
+services:
 
     #   MEMCACHED SERVER 1    ------------------------------------------------------#
 
@@ -26,16 +62,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11212:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 2    ------------------------------------------------------#
 
@@ -43,16 +96,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11213:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 3    ------------------------------------------------------#
 
@@ -60,16 +130,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11214:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 4    ------------------------------------------------------#
 
@@ -77,16 +164,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11215:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 5    ------------------------------------------------------#
 
@@ -94,16 +198,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11216:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 6    ------------------------------------------------------#
 
@@ -111,16 +232,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11217:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 7    ------------------------------------------------------#
 
@@ -128,16 +266,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11218:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 8    ------------------------------------------------------#
 
@@ -145,16 +300,33 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11219:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+
+    # ------------------------------------------------------------------------------#
 
     #   MEMCACHED SERVER 9    ------------------------------------------------------#
 
@@ -162,25 +334,44 @@ services:                                                                       
         image: memcached:${MEMCACHED_SERVER_VERSION:-latest}
         restart: always
         ulimits:
-            memlock: -1
+            #
+            #   Set memory lock limits
+            #
+            memlock: ${MEMCACHED_MEMLOCK:-1}
         ports:
+            #
+            #   Port mapping for Memcached
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11220:11211"
         volumes:
+            #
+            #   Local time
+            #
             - /etc/localtime:/etc/localtime:ro
         networks:
-            - stack_private_network
+            #
+            #   Connect to the private network
+            #
+            memcached_private_network:
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
 
-    #   MVROUTER 1    ----------------------------------------------------------------#
+    #   MCROUTER 1    ---------------------------------------------------------------#
 
     mcrouter1:
         image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
         container_name: mcrouter1-${MCROUTER_VERSION:-40.0.0}
         platform: linux/amd64
+        hostname: ${MCROUTER_HOSTNAME:-localhost}
         restart: always
         links:
+            #
+            #   Links to Memcached instances
+            #
             - memcached1:memcached1
             - memcached2:memcached2
             - memcached3:memcached3
@@ -190,25 +381,60 @@ services:                                                                       
             - memcached7:memcached7
             - memcached8:memcached8
             - memcached9:memcached9
-        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211", "memcached6:11211", "memcached7:11211", "memcached8:11211", "memcached9:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11211
+        command: mcrouter --config-file=/etc/mcrouter/mcrouter_config.json -p 11211
         ports:
+            #
+            #   Port mapping for Mcrouter
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11211:11211"
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-        networks:
-            - stack_private_network
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
 
-    #   MVROUTER 2    ----------------------------------------------------------------#
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+            #
+            #   Map config file
+            #
+
+            #- ./config/basic_mcrouter_config.json:/etc/mcrouter/mcrouter_config.json
+
+            #
+            #   Map failover config file 
+            #
+
+            - ./config/basic_mcrouter_failover_config.json:/etc/mcrouter/mcrouter_config.json
+
+        networks:
+            #
+            #   Connect to public and private networks
+            #
+            # - mcrouter_public_network
+
+            - stack_private_network
+            - memcached_private_network
+            - mcrouter_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+            - "host.docker.internal:host-gateway"
+
+    #   MCROUTER 2    ---------------------------------------------------------------#
 
     mcrouter2:
         image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
         container_name: mcrouter2-${MCROUTER_VERSION:-40.0.0}
         platform: linux/amd64
+        hostname: ${MCROUTER_HOSTNAME:-localhost}
         restart: always
         links:
+            #
+            #   Links to Memcached instances
+            #
             - memcached1:memcached1
             - memcached2:memcached2
             - memcached3:memcached3
@@ -218,25 +444,61 @@ services:                                                                       
             - memcached7:memcached7
             - memcached8:memcached8
             - memcached9:memcached9
-        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211", "memcached6:11211", "memcached7:11211", "memcached8:11211", "memcached9:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11212
-        ports:
-            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11221:11211"  # Schimbat portul extern
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-        networks:
-            - stack_private_network
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
+        command: mcrouter --config-file=/etc/mcrouter/mcrouter_config.json -p 11211
 
-    #   MVROUTER 3    ----------------------------------------------------------------#
+        ports:
+            #
+            #   Port mapping for Mcrouter
+            #
+            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11221:11211"  # Schimbat portul extern
+
+        volumes:
+            #
+            #   Local time
+            #
+
+            - /etc/localtime:/etc/localtime:ro
+
+            #
+            #   Map config file
+            #
+
+            #- ./config/basic_mcrouter_config.json:/etc/mcrouter/mcrouter_config.json
+
+            #
+            #   Map failover config file 
+            #
+
+            - ./config/basic_mcrouter_failover_config.json:/etc/mcrouter/mcrouter_config.json
+
+        networks:
+            #
+            #   Connect to public and private networks
+            #
+            # - mcrouter_public_network
+
+            - stack_private_network
+            - memcached_private_network
+            - mcrouter_private_network
+
+        extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
+            - "host.docker.internal:host-gateway"
+
+    #   MCROUTER 3    ---------------------------------------------------------------#
 
     mcrouter3:
         image: coozila/mcrouter:${MCROUTER_VERSION:-40.0.0}
         container_name: mcrouter3-${MCROUTER_VERSION:-40.0.0}
         platform: linux/amd64
+        hostname: ${MCROUTER_HOSTNAME:-localhost}
         restart: always
         links:
+            #
+            #   Links to Memcached instances
+            #
             - memcached1:memcached1
             - memcached2:memcached2
             - memcached3:memcached3
@@ -246,15 +508,46 @@ services:                                                                       
             - memcached7:memcached7
             - memcached8:memcached8
             - memcached9:memcached9
-        command: mcrouter --config-str='{"pools":{"A":{"servers":["memcached1:11211", "memcached2:11211", "memcached3:11211", "memcached4:11211", "memcached5:11211", "memcached6:11211", "memcached7:11211", "memcached8:11211", "memcached9:11211"]}},"route":{"type":"OperationSelectorRoute","operation_policies":{"add":"AllFastestRoute|Pool|A","delete":"AllFastestRoute|Pool|A","get":"AllFastestRoute|Pool|A","set":"AllFastestRoute|Pool|A"}}}' -p 11213
+        command: mcrouter --config-file=/etc/mcrouter/mcrouter_config.json -p 11211
         ports:
+            #
+            #   Port mapping for Mcrouter
+            #
             - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:11222:11211"  # Schimbat portul extern
+
         volumes:
+            #
+            #   Local time
+            #
+
             - /etc/localtime:/etc/localtime:ro
+
+            #
+            #   Map config file
+            #
+
+            #- ./config/basic_mcrouter_config.json:/etc/mcrouter/mcrouter_config.json
+
+            #
+            #   Map failover config file 
+            #
+
+            - ./config/basic_mcrouter_failover_config.json:/etc/mcrouter/mcrouter_config.json
+
         networks:
+            #
+            #   Connect to public and private networks
+            #
+            # - mcrouter_public_network
+
             - stack_private_network
+            - memcached_private_network
+            - mcrouter_private_network
+
         extra_hosts:
+            #
+            #   Add extra host entries for internal resolution
+            #
             - "host.docker.internal:host-gateway"
-            - "${LOCAL_LISTEN_ADDR:-127.0.0.1}:host-gateway"
 
 # ----------------------------------------------------------------------------------#
