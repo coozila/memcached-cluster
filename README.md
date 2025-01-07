@@ -12,7 +12,7 @@
 
 ## Sponsors
 
-**If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/coozila)
+If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/coozila)
 
 <p align="center">
   <a href="https://github.com/sponsors/coozila">
